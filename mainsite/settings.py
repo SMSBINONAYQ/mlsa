@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'mainsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mlsa_on_covid_reviews',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'mlsa_admin',
+        'PASSWORD': 'Saad@1420',
         'HOST': 'localhost',
         'PORT': '3306',
     }
