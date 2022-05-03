@@ -232,20 +232,23 @@ def analyze(keyword_uChoice, uStartDate, uEndDate, uLimit, uLang, username):
         inDatabase=True
 
    #2nd Check and create best keyword
-    keywords=None
-    match keyword_uChoice:
-        case "All vaccines":
-            keywords="vaccine OR \"covid vaccine\" OR \"COVID-19 vaccine\" OR \"COVID19 vaccine\" OR vaccinated OR covidvaccine OR #vaccine OR vaccination OR Pfizer OR BioNTech OR Moderna OR \"Johnson & Johnson\" OR AstraZeneca OR Novavax"
-        case "Pfizer-BioNTech":
-            keywords="pfizer OR BioNTech"
-        case "Moderna":
-            keywords="Moderna"
-        case "Johnson & Johnson’s Janssen":
-            keywords=" \"Johnson & Johnson’s Janssen\" "
-        case "Oxford-AstraZeneca":
-            keywords=" \"Oxford AstraZeneca\" OR AstraZeneca"
-        case "Novavax":
-            keywords="Novavax"
+    keywords="All vaccines"
+    
+    # Unkonwn from server
+
+    # match keyword_uChoice:
+    #     case "All vaccines":
+    #         keywords="vaccine OR \"covid vaccine\" OR \"COVID-19 vaccine\" OR \"COVID19 vaccine\" OR vaccinated OR covidvaccine OR #vaccine OR vaccination OR Pfizer OR BioNTech OR Moderna OR \"Johnson & Johnson\" OR AstraZeneca OR Novavax"
+    #     case "Pfizer-BioNTech":
+    #         keywords="pfizer OR BioNTech"
+    #     case "Moderna":
+    #         keywords="Moderna"
+    #     case "Johnson & Johnson’s Janssen":
+    #         keywords=" \"Johnson & Johnson’s Janssen\" "
+    #     case "Oxford-AstraZeneca":
+    #         keywords=" \"Oxford AstraZeneca\" OR AstraZeneca"
+    #     case "Novavax":
+    #         keywords="Novavax"
 
     #3rd Search on user analysis options and insert it to DB with None in label
     '''Data Collection Code'''
