@@ -88,7 +88,7 @@ DATABASES = {
         'USER': 'mlsa_admin',
         'PASSWORD': 'Saad@1420',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '',
     }
 }
 
