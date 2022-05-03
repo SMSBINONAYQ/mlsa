@@ -18,7 +18,7 @@ from django.conf import settings
 
 #That is home page function
 def home (request):
-    return render(request,'enSentiment\home.html') 
+    return render(request,'home.html') 
 
 
 def login(request):
