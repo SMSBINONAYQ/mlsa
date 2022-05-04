@@ -260,8 +260,8 @@ def analyze(keyword_uChoice, uStartDate, uEndDate, uLimit, uLang, username):
     #4th Create Machine learing object and clean data to predict ONLY
     '''Read MODEL'''
     SVM_Model=MLmodel("SVM","TFIDF", df)
-    SVM_Model.loadModel(str(settings.BASE_DIR) +'\\MachineLearning_models\\180k_MySVM_model.pkl')
-    SVM_Model.loadVectorizer(str(settings.BASE_DIR) +'\\MachineLearning_models\\180k_MySVM_vectorizer.pkl')
+    SVM_Model.loadModel(str(settings.BASE_DIR) +'/MachineLearning_models/180k_MySVM_model.pkl')
+    SVM_Model.loadVectorizer(str(settings.BASE_DIR) +'/MachineLearning_models/180k_MySVM_vectorizer.pkl')
     SVM_Model.predict(insert_toLabel=True)
     #this "df" now is labeld with Machine learning model 
     df = SVM_Model.tweets_df
