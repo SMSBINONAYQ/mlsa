@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure--n8k&pku*8o-9mlp#^x25_bm%eqhb80r+w7_=&1!as0raa9uyq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['164.92.155.70']
 
 SESSION_COOKIE_AGE = 86400 #After 24 hours  
 
@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'mainsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mlsa_on_covid_reviews',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'mlsa_admin',
+        'PASSWORD': 'Saad@1420',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '',
     }
 }
 
