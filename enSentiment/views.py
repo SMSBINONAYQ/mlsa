@@ -19,7 +19,7 @@ from django.conf import settings
 
 #That is home page function
 def home (request):
-    return render(request,'enSentiment\home.html') 
+    return render(request,'home.html') 
 
 
 def login(request):
@@ -40,7 +40,7 @@ def login(request):
             messages.error(request, "PLEASE CHECK YOUR USERNAME OR PASSWORD!")
             return redirect('enSentiment:home')
     else:
-        return render(request,'enSentiment\home.html') 
+        return render(request,'home.html') 
 
 def logout(request):
     auth.logout(request)
@@ -83,7 +83,7 @@ def register(request):
         return redirect('enSentiment:home') 
 
     else:
-        return render(request,'enSentiment\home.html') 
+        return render(request,'home.html') 
 
 def aboutus(request):
     return render(request, 'aboutus.html')
