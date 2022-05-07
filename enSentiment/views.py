@@ -209,7 +209,7 @@ def getAnalysis(request):
     if request.POST.get('sendEmail'):
             context={'user':request.user,'num_allTweets':tweets_info['num_allTweets']}
             html_body = render_to_string("Email.html",context)
-            msg = EmailMultiAlternatives(subject='Your Analysis of '+str(tweets_info['num_allTweets'])+' Tweets is ready', from_email=settings.EMAIL_HOST_USER,
+            msg = EmailMultiAlternatives(subject='Your Analysis of '+str(tweets_info['num_allTweets'])+' Tweets is ready.', from_email=settings.EMAIL_HOST_USER,
                         to=[request.user.email], body='text_body')
             msg.attach_alternative(html_body, "text/html")
             msg.send()
