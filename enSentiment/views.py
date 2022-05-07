@@ -109,7 +109,7 @@ def result(request,id=None):
         tweets_df=pre_processing(tweets_df)
 
         #Get tweets information to display it in result page 
-        tweets_info=get_tweets_info(tweets_df,result.FromDate,result.ToDate)
+        tweets_info=get_tweets_info(tweets_df,result.FromDate,result.ToDate,result.Keyword)
         return render(request,'result.html',tweets_info)
     else:
         check_session = check_sessions(request)
