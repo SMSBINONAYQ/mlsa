@@ -6,7 +6,6 @@ import nltk
 from nltk.tokenize import word_tokenize 
 from nltk.stem import PorterStemmer, WordNetLemmatizer 
 from nltk.corpus import stopwords
-from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 #This is main function to clean data and MUST the dataframe contain "tweet" colomun  
@@ -46,7 +45,6 @@ def cleanData(tweets_df):
         data = re.sub(r'(.)\1+',r'\1\1',data)                        #remove repetion (looook=>look)
         data=URLsRemove(data)                                        #remove Urls and montion
         data=removeSpecialCharacters(data)                           #remove (? / ! ? * /&)
-        #data=TextBlob(data).correct()                               # this for fix words grammrally,deleted because take long time
         
         data = data.lower().split()                                  # this for make words lower case and sprite them ex => [[this],[is],[my]]
         
