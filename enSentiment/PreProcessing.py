@@ -6,6 +6,7 @@ import nltk
 from nltk.tokenize import word_tokenize 
 from nltk.stem import PorterStemmer, WordNetLemmatizer 
 from nltk.corpus import stopwords
+from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 #This is main function to clean data and MUST the dataframe contain "tweet" colomun  

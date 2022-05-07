@@ -133,7 +133,7 @@ def get_tweets(keyword, Startdate, EndDate, limit, lang, inDatabase, api_name, r
 
     else:
         print("Check of the spelling of the api name (should be in small letters)")
-        return(NULL)
+        return(None)
 
 #this function is to check if the language is same user asked
 def check_lang(tweets_df, lang):
