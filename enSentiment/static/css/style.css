@@ -2971,7 +2971,7 @@ Form addons page
   white-space: nowrap;
 }
 .bootstrap-select .dropdown-menu li a:hover, .bootstrap-select .dropdown-menu li a:focus {
-  color: #20aee3;
+  color: #93c289;
   background: #e9edf2;
 }
 .bootstrap-select .show > .dropdown-menu {

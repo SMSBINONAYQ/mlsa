@@ -1,3 +1,4 @@
+from ast import keyword
 from django.shortcuts import redirect, render , HttpResponse
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -18,7 +19,7 @@ from django.conf import settings
 
 #That is home page function
 def home (request):
-    return render(request,'home.html') 
+    return render(request,'enSentiment\home.html') 
 
 
 def login(request):
@@ -108,8 +109,7 @@ def result(request,id=None):
         tweets_df=pre_processing(tweets_df)
 
         #Get tweets information to display it in result page 
-        tweets_info=get_tweets_info(tweets_df)
-
+        tweets_info=get_tweets_info(tweets_df,result.FromDate,result.ToDate)
         return render(request,'result.html',tweets_info)
     else:
         check_session = check_sessions(request)
@@ -193,7 +193,7 @@ def getAnalysis(request):
     tweets_df =analyze(keyword, fromDate, toDate, tweetsNum,"en", username=username)  
     if(tweets_df.empty):
         return JsonResponse({'state':False},status=200)
-    tweets_info=get_tweets_info(tweets_df)
+    tweets_info=get_tweets_info(tweets_df,fromDate,toDate,keyword)
 
     check_session = check_sessions(request)
     if not check_session:
@@ -233,9 +233,6 @@ def analyze(keyword_uChoice, uStartDate, uEndDate, uLimit, uLang, username):
 
    #2nd Check and create best keyword
     keywords=None
-    
-    # Unkonwn from server
-
     match keyword_uChoice:
         case "All vaccines":
             keywords="vaccine OR \"covid vaccine\" OR \"COVID-19 vaccine\" OR \"COVID19 vaccine\" OR vaccinated OR covidvaccine OR #vaccine OR vaccination OR Pfizer OR BioNTech OR Moderna OR \"Johnson & Johnson\" OR AstraZeneca OR Novavax"
@@ -260,8 +257,8 @@ def analyze(keyword_uChoice, uStartDate, uEndDate, uLimit, uLang, username):
     #4th Create Machine learing object and clean data to predict ONLY
     '''Read MODEL'''
     SVM_Model=MLmodel("SVM","TFIDF", df)
-    SVM_Model.loadModel(r'/home/saad/mlsa/MachineLearning_models/180k_MySVM_model.pkl')
-    SVM_Model.loadVectorizer(r'/home/saad/mlsa/MachineLearning_models/180k_MySVM_Vectorizer.pkl')
+    SVM_Model.loadModel(str(settings.BASE_DIR) +'\\MachineLearning_models\\180k_MySVM_model.pkl')
+    SVM_Model.loadVectorizer(str(settings.BASE_DIR) +'\\MachineLearning_models\\180k_MySVM_vectorizer.pkl')
     SVM_Model.predict(insert_toLabel=True)
     #this "df" now is labeld with Machine learning model 
     df = SVM_Model.tweets_df
@@ -273,7 +270,7 @@ def analyze(keyword_uChoice, uStartDate, uEndDate, uLimit, uLang, username):
 
     return df
 
-def get_tweets_info(tweets_df):
+def get_tweets_info(tweets_df,fromDate,toDate,keyword):
     #get the number of tweest in every class
     num_allTweets=len(tweets_df.index)
     num_posTweets=len(tweets_df[tweets_df['label']==1].index)
@@ -281,10 +278,6 @@ def get_tweets_info(tweets_df):
     num_natTweets=len(tweets_df[tweets_df['label']==0].index)
     num_ofTweets=[{'x':'positive','value':num_posTweets, 'fill':'#CEDB84'},{'x':'natural','value':num_natTweets, 'fill':'#5895DB'},{'x':'negative','value':num_negTweets, 'fill':'#DB766D'}]
 
-    #get the percentage of tweest in every class by devid the number of tweets on number of all tweets multiply 100
-    perc_posTweets=(num_posTweets/num_allTweets)*100
-    perc_negTweets=(num_negTweets/num_allTweets)*100
-    perc_natTweets=(num_natTweets/num_allTweets)*100
 
     #this function to convert the word list to dictonary 
     def to_dict(words):
@@ -306,8 +299,42 @@ def get_tweets_info(tweets_df):
     top_negDF=tweets_df.loc[tweets_df['label']==-1]
     top_negDF=top_negDF.loc[(top_negDF['nreplies'].nlargest(4).index)]
 
+    #Add numbers of tweest based date in list to diplay it as an Axis chart
+    #make copy of orginal DF to another to change the date type
+    tweets_df_dates=tweets_df.copy()
+    tweets_df_dates['date']= pd.to_datetime(tweets_df['date'])
+    tweets_df_dates['date']= tweets_df_dates['date'].dt.strftime('%Y-%m-%d')
+
+    #Add all search dates to list 
+    datesLabel=[]
+    datesLabel.append(tweets_df_dates.loc[0,'date'])
+    for i in range(1,len(tweets_df_dates)):
+        if tweets_df_dates.loc[i,'date']!=tweets_df_dates.loc[i-1,'date']:
+            datesLabel.append(tweets_df_dates.loc[i,'date'])
+
+    #Function to convert polarity DF to list with numbers of tweets in same data 
+    def to_list(date_df,datesLabel):
+        list=[]
+        counter=0
+        for i in range(len(datesLabel)):
+            for j in range(len(date_df)):
+                if datesLabel[i]==date_df.loc[j,'date']:
+                    counter=counter+1
+            list.append(counter)
+            counter=0
+        return list
+
+    #Apply the function to conver to list
+    num_posDate=to_list(tweets_df_dates.loc[tweets_df_dates['label']==1].reset_index(),datesLabel)
+    num_natDate=to_list(tweets_df_dates.loc[tweets_df_dates['label']==0].reset_index(),datesLabel)
+    num_negDate=to_list(tweets_df_dates.loc[tweets_df_dates['label']==-1].reset_index(),datesLabel)
+
     #Graping all above data to dictonary object
     tweets_infos={
+    'FromDate':fromDate,
+    'ToDate':toDate ,
+    'keyword': keyword,
+
     'tweets_df':tweets_df.to_dict('records'),
 
     'num_ofTweets':num_ofTweets,   
@@ -316,10 +343,6 @@ def get_tweets_info(tweets_df):
     'num_negTweets':num_negTweets,
     'num_natTweets':num_natTweets,
 
-    'perc_posTweets':perc_posTweets,
-    'perc_negTweets':perc_negTweets,
-    'perc_natTweets':perc_natTweets,
-
     'most_posTweets':most_posTweets,
     'most_negTweets':most_negTweets,
     'most_natTweets':most_natTweets,
@@ -327,6 +350,11 @@ def get_tweets_info(tweets_df):
     'top_posDF':top_posDF.to_dict('records'),
     'top_natDF':top_natDF.to_dict('records'),
     'top_negDF':top_negDF.to_dict('records'),
+
+    'datesLabel':datesLabel,
+    'num_posDate':num_posDate,
+    'num_natDate':num_natDate,
+    'num_negDate':num_negDate,
     }
     return tweets_infos
 
