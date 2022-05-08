@@ -54,7 +54,7 @@ def register(request):
         username=request.POST.get('register_username')
         firstname=request.POST.get('register_firstname')
         lastname=request.POST.get('register_lastname')
-        email=request.POST.get('register_lastname')
+        email=request.POST.get('register_email')
         password=request.POST.get('register_password')
         conf_password=request.POST.get('register_confpassowrd')
         print(password)
@@ -146,6 +146,9 @@ def profile(request):
             
             if request.POST['password']:
                 request.user.set_password(request.POST['password'])
+                request.user.save()
+            if request.POST['username']:
+                request.user.username=request.POST['username']
                 request.user.save()
 
             username=request.user.username
