@@ -12,6 +12,7 @@ urlpatterns = [
     path('result',views.result, name='result'),
     re_path(r'^result/(?P<id>\d+)/$', views.result ,name='result'),
     re_path(r'^del_result/(?P<id>\d+)/$', views.del_result ,name='del_result'),
+    path('allTweets',views.allTweets, name='allTweets'),
     path('myresults',views.myresults, name='myresults'),
     path('profile',views.profile, name='profile'),
     path('aboutus',views.aboutus, name='aboutus'),

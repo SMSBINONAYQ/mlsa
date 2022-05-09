@@ -110,12 +110,30 @@ def result(request,id=None):
 
         #Get tweets information to display it in result page 
         tweets_info=get_tweets_info(tweets_df,result.FromDate,result.ToDate,result.Keyword)
+
+        check_session = check_sessions(request)
+        if not check_session:
+            create = make_sessions(request,tweets_info)
+            if not create :
+                print("Error")
+        else:
+            del request.session['tweets_info']
+            create = make_sessions(request,tweets_info)
+            if not create :
+                print("Error")
+
         return render(request,'result.html',tweets_info)
     else:
         check_session = check_sessions(request)
         if check_session:
             return render(request,'result.html',check_session)
     return render(request,'result.html')
+
+def allTweets(request):
+    check_session = check_sessions(request)
+    if check_session:
+        return render(request,'allTweets.html',check_session)
+    return redirect('enSentiment:result')
 
 def profile(request):
     if request.user.is_authenticated :
@@ -294,13 +312,17 @@ def get_tweets_info(tweets_df,fromDate,toDate,keyword):
     most_natTweets=to_dict(Counter(" ".join(tweets_df['tweet'][tweets_df['label']==0]).split()).most_common(100))
     most_negTweets=to_dict(Counter(" ".join(tweets_df['tweet'][tweets_df['label']==-1]).split()).most_common(100))
 
-    #Get the most intreactive tweets by number of replies and put in dataframe
+    #Get the most 4 intreactive tweets by number of replies and put in dataframe
     top_posDF=tweets_df.loc[tweets_df['label']==1]
     top_posDF=top_posDF.loc[(top_posDF['nreplies'].nlargest(4).index)]
     top_natDF=tweets_df.loc[tweets_df['label']==0]
     top_natDF=top_natDF.loc[(top_natDF['nreplies'].nlargest(4).index)]
     top_negDF=tweets_df.loc[tweets_df['label']==-1]
     top_negDF=top_negDF.loc[(top_negDF['nreplies'].nlargest(4).index)]
+
+    #All Postive and Negtiave tweets in spreate Dataframe
+    posDF=tweets_df.loc[tweets_df['label']==1]
+    negDF=tweets_df.loc[tweets_df['label']==-1]
 
     #Add numbers of tweest based date in list to diplay it as an Axis chart
     #make copy of orginal DF to another to change the date type
@@ -353,6 +375,9 @@ def get_tweets_info(tweets_df,fromDate,toDate,keyword):
     'top_posDF':top_posDF.to_dict('records'),
     'top_natDF':top_natDF.to_dict('records'),
     'top_negDF':top_negDF.to_dict('records'),
+    
+    'posDF':posDF.to_dict('records'),
+    'negDF':negDF.to_dict('records'),
 
     'datesLabel':datesLabel,
     'num_posDate':num_posDate,
