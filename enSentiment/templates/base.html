@@ -299,12 +299,13 @@
           bootstrapValidate(['#re_firstname','#re_lastname'], 'regex:^[a-zA-Z][a-zA-Z]{0,}$:Username should contain only alphabetical character!|min:4:Enter at least 4 characters!');
           bootstrapValidate('#re_username', 'regex:^[a-zA-Z][a-zA-Z0-9_]{0,}$:Username should start with alphabetical character!|min:3:Enter at least 3 characters!');
           bootstrapValidate('#re_email', 'email:Enter a valid email!');
-          bootstrapValidate('#re_password', 'regex:^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$:Enter at least 8 character with one spicial character!');
+          bootstrapValidate('#re_password', 'regex:^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])).{8,}$:Enter at least 8 character with one CAP character!');
           bootstrapValidate('#re_conpassword', 'matches:#re_password:Does not match!');
-
+          //(?=.*?[#?!@$%^&*-]
+          
           // LogIN Form Validation
-          bootstrapValidate('#si_password', 'regex:^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$:Enter at least 8 character with one spicial character!');
-
+          bootstrapValidate('#si_password', 'regex:^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])).{8,}$:Enter at least 8 character with one CAP character!');
+          //(?=.*?[#?!@$%^&*-]
     </script>
 
     {% block endScript %}
