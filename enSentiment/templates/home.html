@@ -120,7 +120,7 @@
             $("#numERROR").text(errorTXT);
             $('#submit_info').prop('disabled', true);     
         }
-        if((numOftweets < daydiff))
+        else if((numOftweets < daydiff))
         {
             $('#NofTweets').addClass(" is-invalid");
             $("#numERROR").css("display", "inline-block");
