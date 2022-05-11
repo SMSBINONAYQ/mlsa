@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--n8k&pku*8o-9mlp#^x25_bm%eqhb80r+w7_=&1!as0raa9uyq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['164.92.155.70', 'www.mlsa.cloud', 'mlsa.cloud']
 
