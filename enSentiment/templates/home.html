@@ -29,7 +29,7 @@
                                                 <label for="FromDate">From</label>
                                                 <div class="input-group date">
                                                     <!-- name="datetimepicker5" -->
-                                                    <input type="text" id="datetimepicker1" class="form-control" name="FromDate" readonly>
+                                                    <input type="text" id="datetimepicker1" class="form-control" name="FromDate" required readonly>
                                                     <div class="invalid-feedback">
                                                         Please choose a Date.
                                                       </div>
@@ -42,7 +42,7 @@
                                                 <div class="col-6">
                                                     <label for="ToDate">To</label>
                                                     <div class="input-group date">
-                                                        <input type="text" id="datetimepicker2" class="form-control" name="ToDate" readonly>
+                                                        <input type="text" id="datetimepicker2" class="form-control" name="ToDate" required readonly>
                                                     <div class="input-group-addon input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                                     </div>
@@ -53,7 +53,7 @@
                                             <!-- # Tweets -->
                                             <div class="form-group">
                                                 <label for="NofTweets">Number of tweets</label>
-                                                  <input type="text" class="form-control" name="" id="NofTweets" placeholder="Approx.">
+                                                  <input type="text" class="form-control" name="" id="NofTweets" placeholder="Approx." required>
                                                   <div id='numERROR' class="invalid-feedback has-error-numeric" style="display: None"></div>
                                               </div>
                                               {% if user.is_authenticated %}
