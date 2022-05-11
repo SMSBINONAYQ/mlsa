@@ -95,6 +95,10 @@
 <script>
     
     $('#NofTweets').change(function(){
+        if (!$('#NofTweets'))
+        {
+            $('#submit_info').prop('disabled', false);
+        }
 
         if ($('#NofTweets').hasClass('form-control is-invalid'))
         {
