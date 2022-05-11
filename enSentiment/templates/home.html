@@ -146,63 +146,74 @@
         FromData=$("input[name='FromDate']").val();
         ToDate=$("input[name='ToDate']").val();
         NofTweets=$('#NofTweets').val();
-        sendEmail=undefined;
-        if(document.getElementById('sendME')){
-            if(document.getElementById('sendME').checked){
-                sendEmail='yes';
-            }
 
-        }
-    $.ajax(
-    {
-        type:"POST",
-        url: "{% url 'enSentiment:getAnalysis' %}",
-        data:{
-            SelectKeyWord:SelectKeyWord,
-            FromData:FromData,
-            ToDate:ToDate,
-            tweetsNum:NofTweets,
-            sendEmail:sendEmail,
-            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-
-        },
-        beforeSend: function()
+        if(NofTweets)
         {
-            daydiff= (new Date($("input[name='ToDate']").val()) - new Date($("input[name='FromDate']").val()))/(1000 * 60 * 60 * 24);
-            twtNUM=$('#NofTweets').val();
-            waitngTime=((((twtNUM*0.05)+daydiff)+ twtNUM*0.005882)/60).toFixed(2);
-            waitngTime=Math.ceil(waitngTime);
-            waitText='May take '+waitngTime.toString()+' Mins. be patient';
-            //document.getElementById('waitText').innerHTML= waitText;
-            $("#WaitText").text(waitText);
+                sendEmail=undefined;
+                if(document.getElementById('sendME')){
+                    if(document.getElementById('sendME').checked){
+                        sendEmail='yes';
+                    }
+
+                }
+            $.ajax(
+            {
+                type:"POST",
+                url: "{% url 'enSentiment:getAnalysis' %}",
+                data:{
+                    SelectKeyWord:SelectKeyWord,
+                    FromData:FromData,
+                    ToDate:ToDate,
+                    tweetsNum:NofTweets,
+                    sendEmail:sendEmail,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+    
+                },
+                beforeSend: function()
+                {
+                    daydiff= (new Date($("input[name='ToDate']").val()) - new Date($("input[name='FromDate']").val()))/(1000 * 60 * 60 * 24);
+                    twtNUM=$('#NofTweets').val();
+                    waitngTime=((((twtNUM*0.05)+daydiff)+ twtNUM*0.005882)/60).toFixed(2);
+                    waitngTime=Math.ceil(waitngTime);
+                    waitText='May take '+waitngTime.toString()+' Mins. be patient';
+                    //document.getElementById('waitText').innerHTML= waitText;
+                    $("#WaitText").text(waitText);
+                    $('#submit_info').prop('disabled', true);
+                    $('#loaderModal').modal('show');
+                    console.log("EVERY THING IS GOOD")
+                },
+                complete: function()
+                {
+                    $('#loaderModal').modal('hide');
+                },
+                success: function(data) 
+                {
+                    if(data['state']==true)
+                    {
+                        //alert("done");
+                        location.href = "{% url 'enSentiment:result' %}";
+                    }
+                    elseif(data['state']==false)
+                    {
+                        $('#loaderModal').modal('show');
+                        $('#modalcontent').text('can not grapping data')
+                    } 
+                },
+                error: function()
+                {
+                    $('#loaderModal').modal('hide');
+                    alert("error");
+                    
+                }
+            })
+        }
+        else{
+            $('#NofTweets').addClass(" is-invalid");
+            $("#numERROR").css("display", "inline-block");
+            errorTXT='Number of tweest must be more than 1.';
+            $("#numERROR").text(errorTXT);
             $('#submit_info').prop('disabled', true);
-            $('#loaderModal').modal('show');
-            console.log("EVERY THING IS GOOD")
-        },
-        complete: function()
-        {
-            $('#loaderModal').modal('hide');
-        },
-        success: function(data) 
-        {
-            if(data['state']==true)
-            {
-                //alert("done");
-                location.href = "{% url 'enSentiment:result' %}";
-            }
-            elseif(data['state']==false)
-            {
-                $('#loaderModal').modal('show');
-                $('#modalcontent').text('can not grapping data')
-            } 
-        },
-        error: function()
-        {
-            $('#loaderModal').modal('hide');
-            alert("error");
-            
         }
-    })
 });
 </script>  
 <script>
