@@ -112,7 +112,15 @@
         ToDate=new Date($("input[name='ToDate']").val());
         daydiff= ((ToDate - FromDate)/(1000 * 60 * 60 * 24))+1;
         numOftweets= $('#NofTweets').val()
-        if((numOftweets < daydiff) || (daydiff<0))
+        if((daydiff<0))
+        {
+            $('#NofTweets').addClass(" is-invalid");
+            $("#numERROR").css("display", "inline-block");
+            errorTXT='Make sure your date input is correct, "From" input must be less than "To" input.';
+            $("#numERROR").text(errorTXT);
+            $('#submit_info').prop('disabled', true);     
+        }
+        if((numOftweets < daydiff))
         {
             $('#NofTweets').addClass(" is-invalid");
             $("#numERROR").css("display", "inline-block");
