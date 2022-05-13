@@ -154,8 +154,8 @@
         FromData=$("input[name='FromDate']").val();
         ToDate=$("input[name='ToDate']").val();
         NofTweets=$('#NofTweets').val();
-
-        if(NofTweets)
+        daydiff=((new Date(ToDate) - new Date(FromDate))/(1000 * 60 * 60 * 24))+1
+    if(NofTweets && daydiff>0)
         {
                 sendEmail=undefined;
                 if(document.getElementById('sendME')){
@@ -184,7 +184,6 @@
                     waitngTime=((((twtNUM*0.05)+daydiff)+ twtNUM*0.005882)/60).toFixed(2);
                     waitngTime=Math.ceil(waitngTime);
                     waitText='May take '+waitngTime.toString()+' Mins. be patient';
-                    //document.getElementById('waitText').innerHTML= waitText;
                     $("#WaitText").text(waitText);
                     $('#submit_info').prop('disabled', true);
                     $('#loaderModal').modal('show');
@@ -215,10 +214,17 @@
                 }
             })
         }
+        else if(daydiff<0){
+            $('#NofTweets').addClass(" is-invalid");
+            $("#numERROR").css("display", "inline-block");
+            errorTXT='Make sure your date input is correct, "From" input must be less than "To" input.';
+            $("#numERROR").text(errorTXT);
+            $('#submit_info').prop('disabled', true);
+        }
         else{
             $('#NofTweets').addClass(" is-invalid");
             $("#numERROR").css("display", "inline-block");
-            errorTXT='Number of tweest must be more than 1.';
+            errorTXT='Number of tweest must be more than 1. \n OR check the \"From\" and \"To\" inputs.';
             $("#numERROR").text(errorTXT);
             $('#submit_info').prop('disabled', true);
         }
