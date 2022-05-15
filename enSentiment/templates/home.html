@@ -28,23 +28,23 @@
                                                 <div class="col-6">
                                                 <label for="FromDate">From</label>
                                                 <div class="input-group date">
-                                                    <input name="FromDate" type="date" class="form-control" onkeydown="return false">
-
-                                                    {% comment %} <input type="text" id="datetimepicker1" class="form-control" name="FromDate" readonly>
+                                                    <input type="text" id="datetimepicker1" class="form-control" name="FromDate" required readonly>
+                                                    <div class="invalid-feedback">
+                                                        Please choose a Date.
+                                                      </div>
                                                 <div class="input-group-addon input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                </div> {% endcomment %}
+                                                </div>
                                                 </div>
                                                 </div>
 
                                                 <div class="col-6">
                                                     <label for="ToDate">To</label>
                                                     <div class="input-group date">
-                                                        <input name="ToDate" type="date" class="form-control" onkeydown="return false" disabled>
-                                                        {% comment %} <input type="text" id="datetimepicker2" class="form-control" name="ToDate" readonly>
+                                                        <input type="text" id="datetimepicker2" class="form-control" name="ToDate" required readonly>
                                                     <div class="input-group-addon input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                    </div> {% endcomment %}
+                                                    </div>
                                                     </div>
                                                     </div>
                                             </div>
@@ -278,30 +278,6 @@
         });
 </script>
 
-{% comment %} ########## NEW SCRIPT FOR DATE INPUT############### {% endcomment %}
-<script>
-    function pad2(n) {
-        return (n < 10 ? '0' : '') + n;
-      }
-    var date = new Date();
-    var month = pad2(date.getMonth()+1);//months (0-11)
-    var day = pad2(date.getDate());//day (1-31)
-    var year= date.getFullYear();
-    var maxDate =  year+"-"+month+"-"+day;
-
-    $("input[name='FromDate']").attr('min','2020-01-01');
-    $("input[name='FromDate']").attr('max',maxDate);
-
-    $("input[name='FromDate']").change(function(){
-        FromDate=$("input[name='FromDate']").val();
-
-        $("input[name='ToDate']").prop('disabled', false);
-        $("input[name='ToDate']").attr('value',FromDate);
-        $("input[name='ToDate']").attr('min',FromDate);
-        $("input[name='ToDate']").attr('max',maxDate);
-
-    })
-</script>
 
 <!-- Adding validation scripts -->
 <script>
